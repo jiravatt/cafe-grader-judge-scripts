@@ -28,8 +28,8 @@ CPLUSPLUS_COMPILER = "/usr/bin/g++"
 PASCAL_COMPILER = "/usr/bin/fpc"
 JAVA_COMPILER = "/usr/bin/javac"
 RUBY_INTERPRETER = "/usr/bin/ruby"
-PYTHON_INTERPRETER = "/usr/bin/python"
-PYTHON_CHECKER = "/usr/bin/pyflakes"
+PYTHON_INTERPRETER = "/usr/bin/python3"
+PYTHON_CHECKER = "/usr/bin/pyflakes3"
 PHP_INTERPRETER = "/usr/bin/php"
 
 C_OPTIONS = "-O2 -s -static -std=c99 -DCONTEST -lm -Wall"
@@ -149,15 +149,19 @@ when "python"
   if system(command, out: params[:message_file])
     #compile to python bytecode
     command = "#{PYTHON_INTERPRETER} -m py_compile #{params[:source_file]}"
-    puts "compile: #{command}"
+    #puts "compile: #{command}"
     system(command)
-    puts "pwd: " + Dir.pwd
-    Dir.new('.').each {|file| puts file}
-    File.open(params[:output_file],"w") do |out_file|
-      out_file.puts "#!#{PYTHON_INTERPRETER} #{params[:source_file]}c"
-    end
-    File.chmod(0755, params[:output_file])
+    #puts "pwd: " + Dir.pwd
+    #Dir.new('.').each {|file| puts file}
+    #File.open(params[:output_file],"w") do |out_file|
+      #out_file.puts "#!#{PYTHON_INTERPRETER} #{params[:source_file]}c"
+    #end
+    #File.chmod(0755, params[:output_file])
+    #FileUtils.cp("#{params[:source_file]}c",params[:output_file])
+    pyc_filename = params[:source_file].gsub(".py",".cpython-34.py")
+    FileUtils.move("__pycache__/#{pyc_filename}", "#{params[:source_file]}c")
     FileUtils.cp("#{params[:source_file]}c",params[:output_file])
+    File.chmod(0755, params[:output_file])
   end
 
 when "php"

@@ -158,7 +158,7 @@ when "python"
     #end
     #File.chmod(0755, params[:output_file])
     #FileUtils.cp("#{params[:source_file]}c",params[:output_file])
-    pyc_filename = params[:source_file].gsub(".py",".cpython-34.py")
+    pyc_filename = params[:source_file].gsub(".py",".cpython-34.pyc")
     FileUtils.move("__pycache__/#{pyc_filename}", "#{params[:source_file]}c")
     FileUtils.cp("#{params[:source_file]}c",params[:output_file])
     File.chmod(0755, params[:output_file])
